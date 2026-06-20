@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SIMAS - Sistem Informasi Manajemen Masjid</title>
+
+<meta name="theme-color" content="#8B5E3C">
+<meta name="description" content="SIMAS - Sistem Informasi Manajemen Masjid Nurul Jihad">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+
+    --primary:#8B5E3C;
+    --secondary:#C69C6D;
+    --cream:#F8F2E9;
+    --cream-soft:#FFFDF9;
+
+    --text:#3D2B1F;
+    --text-muted:#8C7765;
+
+    --glass-bg:rgba(255,255,255,.25);
+    --glass-border:rgba(255,255,255,.35);
+
+    --shadow:
+    0 20px 40px rgba(139,94,60,.15);
+
+    --blur:22px;
+}
+
+body{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    overflow:hidden;
+    background:linear-gradient(
+        135deg,
+        #fdfaf6 0%,
+        #f6ece0 50%,
+        #f0dfcb 100%
+    );
+    height:100vh;
+    color:var(--text);
+}
+
+/* BACKGROUND */
+
+.bg{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(80px);
+    animation:float 12s ease-in-out infinite;
+}
+
+.circle:nth-child(1){
+    width:350px;
+    height:350px;
+    background:#c69c6d40;
+    top:-120px;
+    left:-120px;
+}
+
+.circle:nth-child(2){
+    width:300px;
+    height:300px;
+    background:#8b5e3c25;
+    right:-100px;
+    bottom:-100px;
+}
+
+.circle:nth-child(3){
+    width:220px;
+    height:220px;
+    background:#d7b98d50;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0px);}
+    50%{transform:translateY(-20px);}
+}
+
+/* SPLASH */
+
+.loading-screen{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    transition:.6s;
+}
+
+.loading-screen.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.card{
+
+    width:100%;
+    max-width:420px;
+
+    background:var(--glass-bg);
+
+    backdrop-filter:blur(var(--blur));
+    -webkit-backdrop-filter:blur(var(--blur));
+
+    border:1px solid var(--glass-border);
+
+    border-radius:35px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:var(--shadow);
+
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    top:-100px;
+    left:-100px;
+    width:250px;
+    height:250px;
+    background:rgba(255,255,255,.3);
+    border-radius:50%;
+    filter:blur(40px);
+}
+
+.logo-box{
+    width:110px;
+    height:110px;
+    margin:auto;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        145deg,
+        rgba(255,255,255,.8),
+        rgba(255,255,255,.2)
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:52px;
+
+    margin-bottom:20px;
+
+    border:1px solid rgba(255,255,255,.5);
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 16px;
+    border-radius:50px;
+    background:rgba(139,94,60,.1);
+    color:var(--primary);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:15px;
+}
+
+.title{
+    font-size:42px;
+    font-weight:800;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+    margin-top:8px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--primary);
+}
+
+.masjid{
+    margin-top:10px;
+    font-size:22px;
+    font-weight:700;
+}
+
+.arab{
+    font-family:'Scheherazade New',serif;
+    font-size:30px;
+    margin-top:15px;
+    color:var(--secondary);
+}
+
+.desc{
+    margin-top:15px;
+    color:var(--text-muted);
+    line-height:1.7;
+    font-size:14px;
+}
+
+/* PROGRESS */
+
+.progress{
+    margin-top:25px;
+    height:12px;
+    border-radius:999px;
+    overflow:hidden;
+    background:rgba(255,255,255,.4);
+}
+
+.bar{
+    height:100%;
+    width:0%;
+
+    background:linear-gradient(
+        90deg,
+        #8B5E3C,
+        #C69C6D
+    );
+
+    border-radius:999px;
+
+    transition:.4s;
+}
+
+.status{
+    margin-top:12px;
+    font-size:13px;
+    color:var(--primary);
+    font-weight:600;
+}
+
+.meta{
+    margin-top:20px;
+
+    display:flex;
+    justify-content:space-between;
+
+    font-size:12px;
+    color:var(--text-muted);
+
+    border-top:1px solid rgba(0,0,0,.05);
+    padding-top:15px;
+}
+
+.footer{
+    margin-top:20px;
+    font-size:12px;
+    color:var(--text-muted);
+}
+
+.footer span{
+    color:var(--primary);
+    font-weight:700;
+}
+
+/* APP */
+
+.app{
+    width:100%;
+    height:100vh;
+}
+
+iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+/* BIOMETRIC */
+
+.bio-wrap{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.bio-btn{
+    border:none;
+    cursor:pointer;
+
+    padding:10px 18px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.35);
+
+    backdrop-filter:blur(10px);
+
+    color:var(--primary);
+
+    font-weight:600;
+}
+
+.dark-toggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:rgba(255,255,255,.3);
+
+    backdrop-filter:blur(15px);
+
+    cursor:pointer;
+
+    z-index:1000;
+}
+
+/* DARK MODE */
+
+body.dark{
+    background:#1f1611;
+}
+
+body.dark .card{
+    background:rgba(45,35,28,.55);
+    color:#fff;
+}
+
+body.dark .desc,
+body.dark .meta,
+body.dark .footer{
+    color:#d1c4b7;
+}
+
+body.dark .masjid{
+    color:white;
+}
+
+@media(max-width:768px){
+
+.title{
+    font-size:34px;
+}
+
+.card{
+    padding:28px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+
+<button class="dark-toggle" onclick="toggleDark()">
+🌙
+</button>
+
+<div class="loading-screen" id="loading">
+
+<div class="card">
+
+<div class="logo-box">
+🕌
+</div>
+
+<div class="badge">
+MASJID NURUL JIHAD
+</div>
+
+<h1 class="title">
+SIMAS
+</h1>
+
+<div class="subtitle">
+Sistem Informasi Manajemen Masjid
+</div>
+
+<div class="masjid">
+Masjid Nurul Jihad
+</div>
+
+<div class="arab">
+وَأَنَّ الْمَسَاجِدَ لِلَّهِ
+</div>
+
+<div class="desc">
+Platform Digital Pengelolaan Masjid Modern,
+Transparan, Aman dan Terintegrasi.
+</div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="status" id="status">
+Menghubungkan Server...
+</div>
+
+<div class="bio-wrap">
+<button class="bio-btn">
+👆 Fingerprint
+</button>
+
+<button class="bio-btn">
+😊 Face ID
+</button>
+</div>
+
+<div class="meta">
+<span>v3.0.0</span>
+<span>2026</span>
+</div>
+
+<div class="footer">
+Developed by <span>Fincode</span> © 2026
+</div>
+
+</div>
+
+</div>
+
+<div class="app">
+
+<iframe
+id="mainFrame"
+src="https://script.google.com/macros/s/AKfycbxz755tGXFIwtbP7WRSfCbWJUuhz9PEFof4okSYEN7Vyeo3AfPjOVaB80LaPIcGaYJS_w/exec">
+</iframe>
+
+</div>
+
+<script>
+
+const bar=document.getElementById('bar');
+const status=document.getElementById('status');
+const loading=document.getElementById('loading');
+
+const steps=[
+{p:20,t:'Menghubungkan Server...'},
+{p:40,t:'Memuat Data Masjid...'},
+{p:60,t:'Memuat Data Jamaah...'},
+{p:80,t:'Sinkronisasi Sistem...'},
+{p:100,t:'SIMAS Siap Digunakan'}
+];
+
+let i=0;
+
+const interval=setInterval(()=>{
+
+if(i<steps.length){
+
+bar.style.width=steps[i].p+'%';
+status.innerText=steps[i].t;
+
+i++;
+
+}else{
+clearInterval(interval);
+}
+
+},700);
+
+document.getElementById('mainFrame')
+.addEventListener('load',()=>{
+
+bar.style.width='100%';
+status.innerText='SIMAS Siap Digunakan';
+
+setTimeout(()=>{
+loading.classList.add('hide');
+},1000);
+
+});
+
+function toggleDark(){
+document.body.classList.toggle('dark');
+}
+
+</script>
+
+</body>
+</html>
