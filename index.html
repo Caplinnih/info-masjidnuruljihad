@@ -27,35 +27,22 @@
             --cream-soft: #FFFDF9;
             --text: #3D2B1F;
             --text-muted: #8C7765;
-            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.45);
             --glass-border: rgba(255, 255, 255, 0.6);
             --shadow: 0 20px 40px rgba(139, 94, 60, 0.12);
-            --blur: 24px;
-            --bg-gradient: linear-gradient(135deg, #fdfaf6 0%, #f6ece0 50%, #f0dfcb 100%);
-        }
-
-        body.dark {
-            --primary: #E5C39E;
-            --secondary: #C69C6D;
-            --text: #F5EFEB;
-            --text-muted: #BFAEA0;
-            --glass-bg: rgba(36, 28, 23, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            --bg-gradient: linear-gradient(135deg, #1A130E 0%, #261B14 50%, #120A06 100%);
+            --blur: 20px;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow: hidden;
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, #fdfaf6 0%, #f6ece0 50%, #f0dfcb 100%);
             height: 100vh;
             width: 100vw;
             color: var(--text);
-            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
         }
 
-        /* BACKGROUND ELEMENTS */
+        /* BACKGROUND BLUR ELEMENTS */
         .bg {
             position: fixed;
             inset: 0;
@@ -69,7 +56,7 @@
             border-radius: 50%;
             filter: blur(80px);
             will-change: transform;
-            animation: float 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            animation: float 12s ease-in-out infinite;
         }
 
         .circle:nth-child(1) {
@@ -86,30 +73,23 @@
             background: rgba(139, 94, 60, 0.15);
             right: -100px;
             bottom: -100px;
-            animation-delay: -3s;
         }
 
         .circle:nth-child(3) {
-            width: 250px;
-            height: 250px;
-            background: rgba(215, 185, 141, 0.25);
+            width: 220px;
+            height: 220px;
+            background: rgba(215, 185, 141, 0.3);
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            animation: floatCenter 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+            50% { transform: translateY(-20px); }
         }
 
-        @keyframes floatCenter {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-45%, -55%) scale(1.05); }
-        }
-
-        /* LOADING / SPLASH SCREEN */
+        /* SPLASH SCREEN */
         .loading-screen {
             position: fixed;
             inset: 0;
@@ -117,9 +97,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px;
-            background: transparent;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+            padding: 20px;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
             will-change: opacity, visibility;
         }
 
@@ -142,26 +121,19 @@
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-            transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
         }
 
         .logo-box {
-            width: 96px;
-            height: 96px;
+            width: 100px;
+            height: 100px;
             margin: 0 auto 20px auto;
             border-radius: 50%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
+            background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(255,255,255,0.2));
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 46px;
-            border: 1px solid rgba(255,255,255,0.4);
-            box-shadow: inset 0 4px 10px rgba(255,255,255,0.2);
-        }
-
-        body.dark .logo-box {
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
         }
 
         .badge {
@@ -174,17 +146,11 @@
             font-weight: 700;
             letter-spacing: 1.5px;
             margin-bottom: 16px;
-            transition: all 0.3s ease;
-        }
-
-        body.dark .badge {
-            background: rgba(229, 195, 158, 0.15);
         }
 
         .title {
             font-size: 40px;
             font-weight: 800;
-            letter-spacing: -0.5px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -195,7 +161,6 @@
             font-size: 14px;
             font-weight: 600;
             color: var(--primary);
-            letter-spacing: 0.3px;
         }
 
         .masjid {
@@ -225,12 +190,7 @@
             height: 8px;
             border-radius: 999px;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
-
-        body.dark .progress {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.5);
         }
 
         .bar {
@@ -238,7 +198,7 @@
             width: 0%;
             background: linear-gradient(90deg, #8B5E3C, #C69C6D);
             border-radius: 999px;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease-out;
             will-change: width;
         }
 
@@ -249,7 +209,7 @@
             font-weight: 600;
         }
 
-        /* BUTTONS */
+        /* BIOMETRIC BUTTONS */
         .bio-wrap {
             display: flex;
             gap: 10px;
@@ -267,50 +227,11 @@
             color: var(--text);
             font-size: 13px;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
             transition: all 0.2s ease;
         }
 
-        body.dark .bio-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .bio-btn:hover, .bio-btn:active {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        body.dark .bio-btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .dark-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            cursor: pointer;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease, background 0.3s;
-        }
-
-        .dark-toggle:hover {
-            transform: scale(1.05);
+        .bio-btn:active {
+            transform: scale(0.95);
         }
 
         /* METADATA & FOOTER */
@@ -324,10 +245,6 @@
             padding-top: 16px;
         }
 
-        body.dark .meta {
-            border-top-color: rgba(255,255,255,0.08);
-        }
-
         .footer {
             margin-top: 16px;
             font-size: 11.5px;
@@ -339,19 +256,18 @@
             font-weight: 700;
         }
 
-        /* MAIN APP CONTAINER (IFRAME VERCEL OPTIMIZED) */
+        /* AMAN UNTUK SEMUA LAYAR: DESKTOP, ANDROID, IPHONE */
         .app {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: #fff;
-        }
-
-        body.dark .app {
-            background: #1A130E;
+            background: #ffffff;
+            overflow: hidden;
         }
 
         iframe {
@@ -359,14 +275,15 @@
             height: 100%;
             border: none;
             display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        /* RESPONSIVE DESIGN */
         @media(max-width: 768px) {
             .title { font-size: 34px; }
-            .card { padding: 28px 24px; border-radius: 28px; }
+            .card { padding: 28px 20px; border-radius: 28px; }
             .logo-box { width: 84px; height: 84px; font-size: 40px; }
-            .arab { font-size: 28px; }
         }
     </style>
 </head>
@@ -377,8 +294,6 @@
         <div class="circle"></div>
         <div class="circle"></div>
     </div>
-
-    <button class="dark-toggle" onclick="toggleDark()" id="darkToggleBtn" aria-label="Toggle Dark Mode">🌙</button>
 
     <div class="loading-screen" id="loading">
         <div class="card">
@@ -423,16 +338,15 @@
         const mainFrame = document.getElementById('mainFrame');
 
         const steps = [
-            { p: 15, t: 'Menghubungkan Server...' },
-            { p: 35, t: 'Memuat Data Masjid...' },
-            { p: 55, t: 'Memuat Data Jamaah...' },
-            { p: 75, t: 'Sinkronisasi Sistem...' },
-            { p: 90, t: 'Menyiapkan Antarmuka...' }
+            { p: 20, t: 'Menghubungkan Server...' },
+            { p: 45, t: 'Memuat Data Masjid...' },
+            { p: 65, t: 'Memuat Data Jamaah...' },
+            { p: 85, t: 'Sinkronisasi Sistem...' },
+            { p: 95, t: 'Menyiapkan Aplikasi...' }
         ];
 
         let currentStep = 0;
 
-        // Simulasi progress awal berjalan halus
         const progressInterval = setInterval(() => {
             if (currentStep < steps.length) {
                 bar.style.width = steps[currentStep].p + '%';
@@ -441,24 +355,18 @@
             } else {
                 clearInterval(progressInterval);
             }
-        }, 600);
+        }, 500);
 
-        // Trigger saat Iframe Google Apps Script SELESAI memuat penuh
+        // Terpicu otomatis dan presisi ketika Web Google Apps Script selesai dimuat sepenuhnya
         mainFrame.addEventListener('load', () => {
-            clearInterval(progressInterval); // Hentikan simulasi jika load selesai lebih cepat
+            clearInterval(progressInterval);
             bar.style.width = '100%';
             status.innerText = 'SIMAS Siap Digunakan';
             
             setTimeout(() => {
                 loading.classList.add('hide');
-            }, 500); // Transisi smooth menyembunyikan splash screen
+            }, 400); 
         });
-
-        // Fitur Dark Mode Toggle yang Halus
-        function toggleDark() {
-            const isDark = document.body.classList.toggle('dark');
-            document.getElementById('darkToggleBtn').innerText = isDark ? '☀️' : '🌙';
-        }
     </script>
 </body>
 </html>
