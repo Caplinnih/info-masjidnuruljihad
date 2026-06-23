@@ -1,362 +1,562 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SIMAS - Sistem Informasi Manajemen Masjid</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <meta name="theme-color" content="#8B5E3C">
-    <meta name="description" content="SIMAS - Sistem Informasi Manajemen Masjid Nurul Jihad">
+<title>SIMAS - Sistem Informasi Manajemen Masjid</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#07110f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Sistem Informasi Manajemen Masjid">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        :root {
-            --primary: #8B5E3C;
-            --secondary: #C69C6D;
-            --cream: #F8F2E9;
-            --cream-soft: #FFFDF9;
-            --text: #3D2B1F;
-            --text-muted: #8C7765;
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --shadow: 0 20px 40px rgba(139, 94, 60, 0.12);
-            --blur: 20px;
-        }
+<style>
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow: hidden;
-            background: linear-gradient(135deg, #fdfaf6 0%, #f6ece0 50%, #f0dfcb 100%);
-            height: 100vh;
-            width: 100vw;
-            color: var(--text);
-        }
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
 
-        /* BACKGROUND BLUR ELEMENTS */
-        .bg {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
+:root {
+    --bg-dark:      #07110f;
+    --emerald:      #0F766E;
+    --emerald-mid:  #14B8A6;
+    --gold:         #D4AF37;
+    --gold-light:   #F5D76E;
+    --text:         #F1F5F9;
+    --text-muted:   #64748B;
+    --glass-bg:     rgba(255,255,255,.08);
+    --glass-border: rgba(255,255,255,.10);
+}
 
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            will-change: transform;
-            animation: float 12s ease-in-out infinite;
-        }
+html {
+    height: 100%;
+    /* prevent iOS bounce & zoom on input focus */
+    overflow: hidden;
+    touch-action: pan-y;
+}
 
-        .circle:nth-child(1) {
-            width: 350px;
-            height: 350px;
-            background: rgba(198, 156, 109, 0.25);
-            top: -120px;
-            left: -120px;
-        }
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
 
-        .circle:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            background: rgba(139, 94, 60, 0.15);
-            right: -100px;
-            bottom: -100px;
-        }
+/* ==============================
+   BACKGROUND GLOW
+============================== */
 
-        .circle:nth-child(3) {
-            width: 220px;
-            height: 220px;
-            background: rgba(215, 185, 141, 0.3);
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
+.bg-glow {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+.glow {
+    position: absolute;
+    border-radius: 50%;
+}
 
-        /* SPLASH SCREEN */
-        .loading-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: opacity 0.5s ease-out, visibility 0.5s;
-            will-change: opacity, visibility;
-        }
+.glow-1 {
+    width: 50vw;
+    height: 50vw;
+    max-width: 380px;
+    max-height: 380px;
+    background: radial-gradient(circle, rgba(15,118,110,.22) 0%, transparent 70%);
+    top: -15vw;
+    left: -10vw;
+    animation: float1 9s ease-in-out infinite;
+}
 
-        .loading-screen.hide {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+.glow-2 {
+    width: 55vw;
+    height: 55vw;
+    max-width: 420px;
+    max-height: 420px;
+    background: radial-gradient(circle, rgba(212,175,55,.13) 0%, transparent 70%);
+    bottom: -15vw;
+    right: -10vw;
+    animation: float2 11s ease-in-out infinite;
+}
 
-        .card {
-            width: 100%;
-            max-width: 420px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--blur));
-            -webkit-backdrop-filter: blur(var(--blur));
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 35px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
+.glow-3 {
+    width: 35vw;
+    height: 35vw;
+    max-width: 240px;
+    max-height: 240px;
+    background: radial-gradient(circle, rgba(20,184,166,.09) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float1 7s ease-in-out infinite reverse;
+}
 
-        .logo-box {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 20px auto;
-            border-radius: 50%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(255,255,255,0.2));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 46px;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
+@keyframes float1 {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-20px); }
+}
 
-        .badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 50px;
-            background: rgba(139, 94, 60, 0.1);
-            color: var(--primary);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-        }
+@keyframes float2 {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(18px); }
+}
 
-        .title {
-            font-size: 40px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+/* ==============================
+   LOADING SCREEN
+============================== */
 
-        .subtitle {
-            margin-top: 4px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary);
-        }
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: max(16px, env(safe-area-inset-top, 16px))
+             max(16px, env(safe-area-inset-right, 16px))
+             max(16px, env(safe-area-inset-bottom, 16px))
+             max(16px, env(safe-area-inset-left, 16px));
+    transition: opacity .6s ease, visibility .6s ease;
+}
 
-        .masjid {
-            margin-top: 8px;
-            font-size: 20px;
-            font-weight: 700;
-        }
+.loading-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
 
-        .arab {
-            font-family: 'Scheherazade New', serif;
-            font-size: 32px;
-            margin-top: 12px;
-            color: var(--secondary);
-            line-height: 1.2;
-        }
+/* ==============================
+   CARD
+============================== */
 
-        .desc {
-            margin-top: 16px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 13.5px;
-        }
+.card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    padding: clamp(28px, 6vw, 48px) clamp(22px, 6vw, 40px);
+    border-radius: clamp(20px, 5vw, 32px);
+    background: linear-gradient(
+        160deg,
+        rgba(255,255,255,.11) 0%,
+        rgba(255,255,255,.04) 100%
+    );
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow:
+        0 40px 80px rgba(0,0,0,.40),
+        0 12px 28px rgba(0,0,0,.25),
+        inset 0 1px 0 rgba(255,255,255,.13);
+    text-align: center;
+    animation: cardEnter .85s cubic-bezier(.22,1,.36,1) both;
+}
 
-        /* PROGRESS BAR */
-        .progress {
-            margin-top: 24px;
-            height: 8px;
-            border-radius: 999px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.5);
-        }
+@keyframes cardEnter {
+    from { opacity: 0; transform: translateY(24px) scale(.97); }
+    to   { opacity: 1; transform: translateY(0)   scale(1);   }
+}
 
-        .bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #8B5E3C, #C69C6D);
-            border-radius: 999px;
-            transition: width 0.3s ease-out;
-            will-change: width;
-        }
+/* ==============================
+   BRAND / LOGO
+============================== */
 
-        .status {
-            margin-top: 12px;
-            font-size: 12.5px;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 8px; /* Ditambahkan agar jarak seimbang setelah tombol bio dihapus */
-        }
+.brand-header {
+    margin-bottom: clamp(16px, 4vw, 26px);
+}
 
-        /* METADATA & FOOTER */
-        .meta {
-            margin-top: 24px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11.5px;
-            color: var(--text-muted);
-            border-top: 1px solid rgba(0,0,0,0.06);
-            padding-top: 16px;
-        }
+.logo-box {
+    width: clamp(140px, 45vw, 200px);
+    height: clamp(88px, 28vw, 124px);
+    margin: 0 auto clamp(12px, 3vw, 18px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .footer {
-            margin-top: 16px;
-            font-size: 11.5px;
-            color: var(--text-muted);
-        }
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 14px rgba(212,175,55,.22));
+}
 
-        /* ANIMASI MODERN FINCODE BERGERAK (MATE / LUXURY GLOW) */
-        .footer .brand-animated {
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            background: linear-gradient(
-                120deg, 
-                #8B5E3C 0%, 
-                #C69C6D 30%, 
-                #f59e0b 50%, 
-                #C69C6D 70%, 
-                #8B5E3C 100%
-            );
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineGradient 4s linear infinite;
-        }
+.tagline {
+    font-size: clamp(14px, 3.8vw, 18px);
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.4;
+    letter-spacing: -.2px;
+}
 
-        @keyframes shineGradient {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
+.sub-tagline {
+    margin-top: 6px;
+    font-size: clamp(9px, 2.2vw, 11px);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 600;
+    opacity: .82;
+}
 
-        /* AMAN UNTUK SEMUA LAYAR: DESKTOP, ANDROID, IPHONE */
-        .app {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background: #ffffff;
-            overflow: hidden;
-        }
+/* ==============================
+   DIVIDER
+============================== */
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+.divider {
+    width: 44px;
+    height: 2px;
+    margin: clamp(14px, 3.5vw, 22px) auto;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,55,.5), transparent);
+}
 
-        @media(max-width: 768px) {
-            .title { font-size: 34px; }
-            .card { padding: 28px 20px; border-radius: 28px; }
-            .logo-box { width: 84px; height: 84px; font-size: 40px; }
-        }
-    </style>
+/* ==============================
+   DUAL SPINNER
+============================== */
+
+.loader-wrap {
+    position: relative;
+    width: clamp(36px, 9vw, 46px);
+    height: clamp(36px, 9vw, 46px);
+    margin: 0 auto clamp(16px, 4vw, 22px);
+}
+
+.ring-outer {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.07);
+    border-top-color: rgba(212,175,55,.65);
+    animation: spin .9s linear infinite;
+}
+
+.ring-inner {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,.05);
+    border-bottom-color: rgba(20,184,166,.65);
+    animation: spin .7s linear infinite reverse;
+}
+
+.dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(212,175,55,.6);
+    animation: pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes spin  { to { transform: rotate(360deg); } }
+@keyframes pulse {
+    0%, 100% { opacity: .5; transform: translate(-50%,-50%) scale(.7); }
+    50%       { opacity: 1;  transform: translate(-50%,-50%) scale(1);  }
+}
+
+/* ==============================
+   PROGRESS
+============================== */
+
+.progress-wrap {
+    height: 5px;
+    background: rgba(255,255,255,.07);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--emerald), var(--gold));
+    transition: width .55s cubic-bezier(.4,0,.2,1);
+    position: relative;
+}
+
+.bar::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 28px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.30));
+    border-radius: 999px;
+}
+
+/* ==============================
+   STATUS ROW
+============================== */
+
+.status-wrap {
+    margin-top: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.status {
+    font-size: clamp(11px, 2.8vw, 13px);
+    color: var(--text-muted);
+    font-weight: 500;
+    text-align: left;
+    transition: opacity .25s ease;
+}
+
+.status.fade { opacity: 0; }
+
+#percent {
+    font-size: clamp(11px, 2.8vw, 13px);
+    color: var(--gold);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ==============================
+   FOOTER — FC LOGO
+============================== */
+
+.footer {
+    margin-top: clamp(20px, 5vw, 30px);
+    padding-top: clamp(14px, 3.5vw, 20px);
+    border-top: 1px solid rgba(255,255,255,.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* FC monogram badge */
+.fc-badge {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(140deg, #0F766E 0%, #0a4f48 100%);
+    border: 1px solid rgba(255,255,255,.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.fc-badge::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: rgba(255,255,255,.06);
+}
+
+.fc-text {
+    position: relative;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: -.5px;
+    line-height: 1;
+}
+
+.footer-info {
+    text-align: left;
+}
+
+.footer-brand {
+    font-size: clamp(10px, 2.5vw, 12px);
+    color: #cbd5e1;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.footer-tagline {
+    font-size: clamp(9px, 2.2vw, 10.5px);
+    color: #475569;
+    margin-top: 2px;
+    letter-spacing: .3px;
+}
+
+/* ==============================
+   APP FRAME
+============================== */
+
+.app {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    z-index: 1;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* ==============================
+   RESPONSIVE TWEAKS
+============================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .card {
+        padding: 18px 28px;
+        border-radius: 18px;
+    }
+    .logo-box {
+        width: 100px;
+        height: 60px;
+        margin-bottom: 8px;
+    }
+    .divider { margin: 10px auto; }
+    .loader-wrap { width: 32px; height: 32px; margin-bottom: 12px; }
+}
+
+</style>
 </head>
 <body>
 
-    <div class="bg">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
-    </div>
+<!-- Background glow -->
+<div class="bg-glow">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+</div>
 
-    <div class="loading-screen" id="loading">
-        <div class="card">
-            <div class="logo-box">🕌</div>
-            <div class="badge">MASJID NURUL JIHAD</div>
-            <h1 class="title">SIMAS</h1>
-            <div class="subtitle">Sistem Informasi Manajemen Masjid</div>
-            <div class="masjid">Masjid Nurul Jihad</div>
-            <div class="arab">وَأَنَّ الْمَسَاجِدَ لِلَّهِ</div>
-            <div class="desc">
-                Platform Digital Pengelolaan Masjid Modern,<br>Transparan, Aman dan Terintegrasi.
-            </div>
+<!-- Loading Screen -->
+<div class="loading-screen" id="loading">
+    <div class="card">
 
-            <div class="progress">
-                <div class="bar" id="bar"></div>
+        <div class="brand-header">
+            <div class="logo-box">
+                <img
+                    src="https://drive.google.com/thumbnail?id=1JjN2pncH1XM70Gc2ZOCMKTI3Nt3LqXoc&sz=w500"
+                    alt="SIMAS Logo">
             </div>
-            <div class="status" id="status">Menghubungkan Server...</div>
+            <div class="tagline">Sistem Informasi Manajemen Masjid</div>
+            <div class="sub-tagline">Developed by Fincode Studio</div>
+        </div>
 
-            <div class="meta">
-                <span>v3.0.0</span>
-                <span>2026</span>
+        <div class="divider"></div>
+
+        <!-- Dual spinner -->
+        <div class="loader-wrap">
+            <div class="ring-outer"></div>
+            <div class="ring-inner"></div>
+            <div class="dot"></div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-wrap">
+            <div class="bar" id="bar"></div>
+        </div>
+
+        <div class="status-wrap">
+            <div class="status" id="status">Menginisialisasi sistem...</div>
+            <div id="percent">0%</div>
+        </div>
+
+        <!-- Footer with FC badge -->
+        <div class="footer">
+            <div class="fc-badge">
+                <span class="fc-text">FC</span>
             </div>
-            <div class="footer">
-                Developed by <span class="brand-animated">Fincode</span> © 2026
+            <div class="footer-info">
+                <div class="footer-brand">FINCODE STUDIO</div>
+                <div class="footer-tagline">Crafting Smart Digital Solutions</div>
             </div>
         </div>
+
     </div>
+</div>
 
-    <div class="app">
-        <iframe id="mainFrame" src="https://script.google.com/macros/s/AKfycbzfNXxG6wTIu2XFuCouvIARRi5VKThDTNEZQjFYZgjDtpPEYKnV5BvqvzXBV1Rhtacfaw/exec"></iframe>
-    </div>
+<!-- Main App -->
+<div class="app">
+    <iframe
+        id="mainFrame"
+        src="https://script.google.com/macros/s/AKfycbzfNXxG6wTIu2XFuCouvIARRi5VKThDTNEZQjFYZgjDtpPEYKnV5BvqvzXBV1Rhtacfaw/exec">
+    </iframe>
+</div>
 
-    <script>
-        const bar = document.getElementById('bar');
-        const status = document.getElementById('status');
-        const loading = document.getElementById('loading');
-        const mainFrame = document.getElementById('mainFrame');
+<script>
 
-        const steps = [
-            { p: 20, t: 'Menghubungkan Server...' },
-            { p: 45, t: 'Memuat Data Masjid...' },
-            { p: 65, t: 'Memuat Data Jamaah...' },
-            { p: 85, t: 'Sinkronisasi Sistem...' },
-            { p: 95, t: 'Menyiapkan Aplikasi...' }
-        ];
+const bar     = document.getElementById('bar');
+const status  = document.getElementById('status');
+const percent = document.getElementById('percent');
+const loading = document.getElementById('loading');
+const frame   = document.getElementById('mainFrame');
 
-        let currentStep = 0;
+const steps = [
+    { p: 15, t: 'Menghubungkan ke server...' },
+    { p: 35, t: 'Memverifikasi keamanan...' },
+    { p: 55, t: 'Sinkronisasi data...' },
+    { p: 75, t: 'Menyiapkan layanan masjid...' },
+    { p: 90, t: 'Memuat dashboard...' }
+];
 
-        const progressInterval = setInterval(() => {
-            if (currentStep < steps.length) {
-                bar.style.width = steps[currentStep].p + '%';
-                status.innerText = steps[currentStep].t;
-                currentStep++;
-            } else {
-                clearInterval(progressInterval);
-            }
-        }, 500);
+let idx = 0;
 
-        // Terpicu otomatis dan presisi ketika Web Google Apps Script selesai dimuat sepenuhnya
-        mainFrame.addEventListener('load', () => {
-            clearInterval(progressInterval);
-            bar.style.width = '100%';
-            status.innerText = 'SIMAS Siap Digunakan';
-            
-            setTimeout(() => {
-                loading.classList.add('hide');
-            }, 400); 
-        });
-    </script>
+function setStep(p, t) {
+    bar.style.width   = p + '%';
+    percent.innerText = p + '%';
+    // fade text
+    status.classList.add('fade');
+    setTimeout(() => {
+        status.innerText = t;
+        status.classList.remove('fade');
+    }, 220);
+}
+
+const progressInterval = setInterval(() => {
+    if (idx < steps.length) {
+        setStep(steps[idx].p, steps[idx].t);
+        idx++;
+    }
+}, 750);
+
+function hideLoading() {
+    clearInterval(progressInterval);
+    setStep(100, 'Aplikasi berhasil dimuat');
+    setTimeout(() => loading.classList.add('hide'), 650);
+}
+
+frame.addEventListener('load', hideLoading);
+
+// Fallback: hide after 12 seconds if iframe takes too long
+setTimeout(() => {
+    if (!loading.classList.contains('hide')) {
+        setStep(100, 'Koneksi lambat, melanjutkan...');
+        setTimeout(() => loading.classList.add('hide'), 500);
+    }
+}, 12000);
+
+</script>
 </body>
 </html>
