@@ -345,6 +345,13 @@ setTimeout(()=>{
     },300);
   }
 },10000);
+
+  // Dengarkan pesan dari iframe (Public.html)
+window.addEventListener('message', function(e) {
+  if(e.data && e.data.action === 'goToAdmin') {
+    document.getElementById('mainFrame').src = e.data.url;
+  }
+});
   
 </script>
 </body>
