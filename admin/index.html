@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>SIMAS Admin - Masjid Nurul Jihad</title>
+<meta name="theme-color" content="#07110f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1JjN2pncH1XM70Gc2ZOCMKTI3Nt3LqXoc&sz=w64">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#07110f}
+.app{position:fixed;inset:0;width:100%;height:100%}
+iframe{width:100%;height:100%;border:none;display:block}
+
+/* Mini loader — tampil sebentar sambil iframe GAS dimuat */
+.mini-loader{
+  position:fixed;inset:0;z-index:9999;
+  background:#07110f;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:opacity .3s ease,visibility .3s ease;
+}
+.mini-loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.ring{
+  width:36px;height:36px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,.08);
+  border-top-color:rgba(212,175,55,.85);
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mini-loader p{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.35);letter-spacing:.4px;
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="mini-loader" id="loader">
+  <div class="ring"></div>
+  <p>Membuka panel admin…</p>
+</div>
+
+<div class="app">
+  <iframe id="adminFrame" src="" allow="camera; microphone"></iframe>
+</div>
+
+<script>
+  const frame  = document.getElementById('adminFrame');
+  const loader = document.getElementById('loader');
+
+  const FALLBACK = 'https://script.google.com/macros/s/AKfycbx9nx1yqfndz8uiUggC-t-yBHEdDMRasbBgf3GJVt5HLvTjbEwZkx0vr_7PVWGV5AJWig/exec';
+
+  function loadAdmin(gasUrl) {
+    frame.src = gasUrl + '?page=admin';
+
+    frame.addEventListener('load', () => {
+      loader.classList.add('hide');
+    }, { once: true });
+
+    // Fallback: sembunyikan loader setelah 8 detik jika iframe lambat
+    setTimeout(() => loader.classList.add('hide'), 8000);
+  }
+
+  fetch('/config.json')
+    .then(r => r.json())
+    .then(cfg => loadAdmin(cfg.gasUrl))
+    .catch(() => loadAdmin(FALLBACK));
+
+  // Tangkap pesan dari iframe GAS jika ada navigasi balik ke publik
+  window.addEventListener('message', function(e) {
+    if (!e.data || !e.data.action) return;
+    if (e.data.action === 'goToPublic') {
+      window.location.href = '/';
+    }
+  });
+</script>
+</body>
+</html>
