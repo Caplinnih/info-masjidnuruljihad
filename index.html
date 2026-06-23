@@ -194,10 +194,9 @@ iframe{width:100%;height:100%;border:none;display:block}
   window.addEventListener('message', function(e) {
     if (!e.data || !e.data.action) return;
 
-    if (e.data.action === 'goToAdmin') {
-      // Ganti konten iframe ke halaman admin, URL Vercel TIDAK berubah
-      frame.src = window.GAS_URL + '?page=admin';
-    }
+  if (e.data.action === 'goToAdmin') {
+  window.location.href = '/admin';
+}
 
     if (e.data.action === 'goToPublic') {
       frame.src = window.GAS_URL;
