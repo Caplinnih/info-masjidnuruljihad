@@ -4,67 +4,165 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>SIMAS Admin - Masjid Nurul Jihad</title>
-<meta name="theme-color" content="#07110f">
+<meta name="theme-color" content="#0a0f0d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1JjN2pncH1XM70Gc2ZOCMKTI3Nt3LqXoc&sz=w64">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#07110f}
-.app{position:fixed;inset:0;width:100%;height:100%}
-iframe{width:100%;height:100%;border:none;display:block}
-
-/* Mini loader — tampil sebentar sambil iframe GAS dimuat */
-.mini-loader{
-  position:fixed;inset:0;z-index:9999;
-  background:#07110f;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-  transition:opacity .3s ease,visibility .3s ease;
-}
-.mini-loader.hide{opacity:0;visibility:hidden;pointer-events:none}
-.ring{
-  width:36px;height:36px;border-radius:50%;
-  border:2.5px solid rgba(255,255,255,.08);
-  border-top-color:rgba(212,175,55,.85);
-  animation:spin .7s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.mini-loader p{
-  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
-  font-size:12px;font-weight:600;
-  color:rgba(255,255,255,.35);letter-spacing:.4px;
-}
-</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #f5efe6;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── Loader ─────────────────────────────── */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: radial-gradient(ellipse at 60% 40%, #f0e6d3 0%, #ede3d4 40%, #e8dcc8 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 20px;
+    transition: opacity .25s ease, visibility .25s ease;
+  }
+
+  #loader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Mosque icon mark */
+  .mark {
+    width: 48px; height: 48px;
+    position: relative; display: flex;
+    align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .mark svg {
+    width: 32px; height: 32px;
+    fill: none;
+    stroke: #9c7a3c;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50%       { opacity: 1;    transform: scale(1.06); }
+  }
+
+  /* Progress bar */
+  .bar-track {
+    width: 120px; height: 2px;
+    background: rgba(140,100,50,.15);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #c9973a, #a8722a);
+    border-radius: 99px;
+    transition: width .3s cubic-bezier(.4,0,.2,1);
+  }
+
+  .label {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(90,60,20,.45);
+    letter-spacing: .5px;
+  }
+
+  /* ─── Iframe ──────────────────────────────── */
+  #adminFrame {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    border: none;
+    display: block;
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+
+  #adminFrame.visible {
+    opacity: 1;
+  }
+</style>
 </head>
 <body>
 
-<div class="mini-loader" id="loader">
-  <div class="ring"></div>
-  <p>Membuka panel admin…</p>
+<div id="loader">
+  <div class="mark">
+    <!-- simple crescent/star mark for masjid context -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/>
+      <path d="M17.5 6.5l.5.5-.5.5-.5-.5z" stroke-width="2.5"/>
+    </svg>
+  </div>
+  <div class="bar-track">
+    <div class="bar-fill" id="bar"></div>
+  </div>
+  <p class="label" id="label">Memuat panel admin…</p>
 </div>
 
-<div class="app">
-  <iframe id="adminFrame" src="" allow="camera; microphone"></iframe>
-</div>
+<iframe id="adminFrame" src="" allow="camera; microphone"></iframe>
 
 <script>
   const frame  = document.getElementById('adminFrame');
   const loader = document.getElementById('loader');
+  const bar    = document.getElementById('bar');
+  const label  = document.getElementById('label');
 
   const FALLBACK = 'https://script.google.com/macros/s/AKfycbx9nx1yqfndz8uiUggC-t-yBHEdDMRasbBgf3GJVt5HLvTjbEwZkx0vr_7PVWGV5AJWig/exec';
+
+  // Quick progress simulation for perceived speed
+  let prog = 0;
+  const steps = [
+    { to: 40, delay: 0   },
+    { to: 70, delay: 150 },
+    { to: 88, delay: 350 },
+  ];
+
+  function setBar(pct) {
+    bar.style.width = pct + '%';
+  }
+
+  steps.forEach(s => {
+    setTimeout(() => setBar(s.to), s.delay);
+  });
 
   function loadAdmin(gasUrl) {
     frame.src = gasUrl + '?page=admin';
 
     frame.addEventListener('load', () => {
-      loader.classList.add('hide');
+      // Fill bar to 100, then reveal
+      setBar(100);
+      label.textContent = 'Siap';
+      setTimeout(() => {
+        frame.classList.add('visible');
+        loader.classList.add('hide');
+      }, 150);
     }, { once: true });
 
-    // Fallback: sembunyikan loader setelah 8 detik jika iframe lambat
-    setTimeout(() => loader.classList.add('hide'), 8000);
+    // Hard fallback: 7s
+    setTimeout(() => {
+      if (!frame.classList.contains('visible')) {
+        setBar(100);
+        frame.classList.add('visible');
+        loader.classList.add('hide');
+      }
+    }, 7000);
   }
 
   fetch('/config.json')
@@ -72,12 +170,9 @@ iframe{width:100%;height:100%;border:none;display:block}
     .then(cfg => loadAdmin(cfg.gasUrl))
     .catch(() => loadAdmin(FALLBACK));
 
-  // Tangkap pesan dari iframe GAS jika ada navigasi balik ke publik
   window.addEventListener('message', function(e) {
     if (!e.data || !e.data.action) return;
-    if (e.data.action === 'goToPublic') {
-      window.location.href = '/';
-    }
+    if (e.data.action === 'goToPublic') window.location.href = '/';
   });
 </script>
 </body>
