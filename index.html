@@ -101,7 +101,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Memotong & memunculkan seluruh blok logo + tagline dari 1% ke 100% */
             clip-path: circle(1% at 50% 50%);
             animation: brandReveal 2.2s cubic-bezier(0.76, 0, 0.24, 1) forwards;
         }
@@ -120,7 +119,6 @@
             object-fit: containment;
         }
 
-        /* STYLE UNTUK TAGLINE BARU */
         .tagline {
             margin-top: 12px;
             font-size: 13px;
@@ -131,7 +129,7 @@
         }
 
         .tagline span.highlight {
-            color: #00dfd8; /* Efek biru neon menyala untuk kata "Smart" */
+            color: #00dfd8; 
             font-weight: 700;
         }
 
@@ -226,16 +224,14 @@
         <div class="glow-circle"></div>
     </div>
 
-    <!-- LOADING SCREEN FOKUS BRAND LOGO + TAGLINE -->
     <div class="loading-screen" id="loading">
         <div class="card">
             
-            <!-- CONTAINER LOGO DAN TAGLINE BERANIMASI -->
             <div class="brand-header">
                 <div class="logo-box">
-                    <img src="logo.png" alt="Fincode Studio Logo">
+                    <!-- LINK DIRECT GOOGLE DRIVE SUDAH TERPASANG -->
+                    <img src="https://docs.google.com/uc?export=view&id=1ZuWpJVMUnkUgHSH7dw6emtT5A3VjHYw0" alt="Fincode Studio Logo">
                 </div>
-                <!-- Tagline Tambahan -->
                 <div class="tagline">Crafting <span class="highlight">Smart</span> Digital Solutions</div>
             </div>
 
@@ -250,7 +246,6 @@
         </div>
     </div>
 
-    <!-- FRAME UTAMA YANG DITUJU -->
     <div class="app">
         <iframe id="mainFrame" src="https://script.google.com/macros/s/AKfycbzfNXxG6wTIu2XFuCouvIARRi5VKThDTNEZQjFYZgjDtpPEYKnV5BvqvzXBV1Rhtacfaw/exec"></iframe>
     </div>
